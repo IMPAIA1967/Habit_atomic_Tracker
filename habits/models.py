@@ -10,6 +10,10 @@ class Habit(models.Model):
         verbose_name="Пользователь",
         help_text="Создатель привычки"
     )
+    telegram_chat_id = models.BigIntegerField(
+        verbose_name="Telegram Chat ID",
+        help_text="ID чата для отправки уведомлений"
+    )
     place = models.CharField(
         max_length=255,
         verbose_name="Место",
@@ -57,30 +61,15 @@ class Habit(models.Model):
     )
 
     def clean(self):
-        # Валидация: нельзя одновременно reward и related_habit
         if self.reward and self.related_habit:
-            raise ValidationError(
-                "Нельзя указывать одновременно вознаграждение и связанную привычку."
-            )
-
-        # Валидация: приятная привычка не может иметь reward или related_habit
+            raise ValidationError("Нельзя указывать одновременно вознаграждение и связанную привычку.")
         if self.is_pleasant:
             if self.reward or self.related_habit:
-                raise ValidationError(
-                    "Приятная привычка не может иметь вознаграждение или связанную привычку."
-                )
-
-        # Валидация: связанная привычка должна быть приятной
+                raise ValidationError("Приятная привычка не может иметь вознаграждение или связанную привычку.")
         if self.related_habit and not self.related_habit.is_pleasant:
-            raise ValidationError(
-                "Связанная привычка должна быть приятной."
-            )
-
-        # Валидация: время выполнения ≤ 120 сек
+            raise ValidationError("Связанная привычка должна быть приятной.")
         if self.duration > 120:
             raise ValidationError("Время на выполнение не должно превышать 120 секунд.")
-
-        # Валидация: периодичность от 1 до 7
         if not (1 <= self.periodicity <= 7):
             raise ValidationError("Периодичность должна быть от 1 до 7 дней.")
 
