@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import HabitViewSet
-from .views_auth import register_user, CustomTokenObtainPairView
+from .views_auth import CustomTokenObtainPairView, register_user
 
 router = DefaultRouter()
 router.register(r'habits', HabitViewSet, basename='habit')
