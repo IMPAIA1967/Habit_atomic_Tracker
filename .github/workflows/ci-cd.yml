@@ -66,8 +66,12 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/habit-tracker || mkdir ~/habit-tracker && cd ~/habit-tracker
-            git clone https://github.com/${{ github.repository }} . || git pull origin homework
+            mkdir -p ~/habit-tracker
+            cd ~/habit-tracker
+            git init
+            git remote add origin https://github.com/${{ github.repository }}.git
+            git fetch origin homework
+            git reset --hard origin/homework
             docker compose down --remove-orphans || true
             docker compose up --build -d
             docker compose ps
