@@ -4,17 +4,15 @@ from urllib.parse import urlparse
 from decouple import config
 from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN')
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN', default='fake_token_for_tests')
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = "django-insecure-*$3az1m@r+1k$k!p8bc)up!$035njwk7eostn7m7&24$=tfmxc"
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
