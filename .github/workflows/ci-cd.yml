@@ -52,3 +52,22 @@ jobs:
       - name: Test Docker Compose config
         run: |
           docker compose config
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    if: github.ref == 'refs/heads/homework'
+    steps:
+      - name: Deploy to remote server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/habit-tracker || mkdir ~/habit-tracker && cd ~/habit-tracker
+            git clone https://github.com/${{ github.repository }} . || git pull origin homework
+            docker compose down --remove-orphans || true
+            docker compose up --build -d
+            docker compose ps
