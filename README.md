@@ -8,11 +8,45 @@
 - Celery
 - Redis
 - PostgreSQL
+- Docker & Docker Compose
+- GitHub Actions (CI/CD)
 - Telegram Bot API
 
 ## Установка и запуск
 
 Будет добавлено после реализации.
+
+1. Убедитесь, что установлены **Docker** и **Docker Compose**
+2. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/ваш-логин/Habit_atomic_Tracker.git
+   cd Habit_atomic_Tracker
+   ```
+## Запуск проекта:
+
+```env
+docker compose up --build
+ ```
+Приложение будет доступно по адресу:
+http://localhost:8000
+
+### Без Docker (только для разработки)
+
+1) Создайте виртуальное окружение и установите зависимости:
+```
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
+pip install -r requirements.txt
+```
+2) Запустите сервер и Celery (см. раздел «Запуск фоновых задач» ниже)
+
+ ### Деплой
+- Проект автоматически деплоится на удалённый сервер при пуше в ветку homework.
+- Адрес сервера: http://62.84.115.183:8000
+- Сервер: Ubuntu 24.04 LTS в Yandex Cloud
+- CI/CD: GitHub Actions (тесты → сборка → деплой)
+
 ## Уведомления в Telegram
 
 Проект поддерживает отправку напоминаний о привычках через Telegram-бота.
@@ -50,6 +84,3 @@ celery -A habit_tracker worker --loglevel=info --pool=solo
 # Терминал 3: Celery beat (планировщик)
 celery -A habit_tracker beat --loglevel=info
 ```
-
-
-
